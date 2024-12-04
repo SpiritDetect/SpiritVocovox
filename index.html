@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spirit VocoVox</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-image: url('background.jpg'); /* Imposta l'immagine di sfondo */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: white; /* Cambia il colore del testo a bianco per visibilità */
+      height: 100vh; /* Imposta l'altezza al 100% della finestra */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    h1 {
+      font-size: 25px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Aggiunge un'ombra al titolo per migliorare la visibilità */
+    }
+    button {
+      background-color: black; /* Bottone nero */
+      color: white; /* Scritta bianca */
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .slider {
+      width: 300px;
+      margin: 20px 0;
+    }
+    label {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    #speedValue, #volumeValue {
+      font-weight: bold;
+      font-size: 20px;
+    }
+    /* Barra nera per separare velocità e volume */
+    .separator {
+      width: 80%;
+      height: 2px;
+      background-color: black;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Spirit VocoVox Created By Domenico Pizzurro (Team G.H.PA)</h1>
+    <!-- VocoVox -->
+    <audio id="audioPlayer" src="audio.ogg" loop></audio>
+
+    <!-- Pulsante di riproduzione -->
+    <button id="playButton">Start Scan</button>
+
+    <div class="controls">
+      <!-- Velocità -->
+      <label for="speed">Velocità: </label>
+      <input type="range" id="speed" min="0.8" max="1.5" step="0.05" value="1" class="slider">
+      <span id="speedValue">1.00x</span>
+
+      <!-- Barra nera di separazione -->
+      <div class="separator"></div>
+
+      <!-- Volume -->
+      <label for="volume">Volume: </label>
+      <input type="range" id="volume" min="0" max="1" step="0.05" value="1" class="slider">
+      <span id="volumeValue">100%</span>
+    </div>
+  </div>
+
+  <script>
+    // Selezioniamo l'elemento audio e il pulsante
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playButton = document.getElementById('playButton');
+    const speedControl = document.getElementById('speed');
+    const speedValue = document.getElementById('speedValue');
+    const volumeControl = document.getElementById('volume');
+    const volumeValue = document.getElementById('volumeValue');
+
+    // Funzione per avviare e fermare la riproduzione audio
+    playButton.addEventListener('click', () => {
+      if (audioPlayer.paused) {
+        audioPlayer.play();
+        playButton.textContent = 'Stop Scan';
+      } else {
+        audioPlayer.pause();
+        playButton.textContent = 'Start Scan';
+      }
+    });
+
+    // Funzione per regolare la velocità di riproduzione
+    speedControl.addEventListener('input', () => {
+      const speed = speedControl.value;
+      audioPlayer.playbackRate = speed;
+      speedValue.textContent = `${speed}x`;
+    });
+
+    // Funzione per regolare il volume
+    volumeControl.addEventListener('input', () => {
+      const volume = volumeControl.value;
+      audioPlayer.volume = volume;
+      volumeValue.textContent = `${(volume * 100).toFixed(0)}%`;  // Mostra il volume in percentuale
+    });
+
+    // Gestione errori se il file audio non è caricato
+    audioPlayer.addEventListener('error', () => {
+      alert("Il file audio non è stato trovato. Assicurati che 'audio.ogg sia nella stessa cartella del file HTML.");
+    });
+  </script>
+</body>
+</html>
